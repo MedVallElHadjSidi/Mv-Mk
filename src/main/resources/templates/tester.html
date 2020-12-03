@@ -1,0 +1,60 @@
+<!DOCTYPE  html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/ layout"
+      layout:decorator="layout">
+<head>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"
+          th:href="@{css/bootstrap.min.css}"
+    />
+</head>
+
+
+    <p></p>
+    <p></p><p></p>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Notes</div>
+
+                        <div class="panel-body">
+    <h1>Notes</h1>
+    <form>
+        <table class="table table-bordered">
+
+            <tr><td>  <input type="text" class="form-control" name="n1" required="required"/>
+            </td>
+                <td><label class="control-label"> * 1.5</label></td>
+            </tr>
+            <tr><td>  <input type="text" class="form-control" name="n1" required="required"/>
+            </td>
+                <td><label class="control-label"> * 1.15</label></td>
+            </tr>
+            <tr><td>  <input type="text" class="form-control" name="n1" required="required"/>
+            </td>
+                <td><label class="control-label"> * 1.1</label></td>
+            </tr>
+            <tr><td>  <input type="text" class="form-control" name="n1" required="required"/>
+            </td>
+                <td><label class="control-label"> * 1.25</label></td>
+            </tr>
+
+            </tr>
+            <tr><td><center><button class="btn btn-primary">Ok</button></center>
+            </td>
+
+            </tr>
+
+        </table>
+
+    </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>

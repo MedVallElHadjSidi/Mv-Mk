@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+ <head>
+     <title>Layout</title>
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"
+th:href="@{css/bootstrap.min.css}"
+/>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+     <script type="text/javascript" src="Js/bootstrap.min.js" th:src="@{Js/bootstrap.min.js}"></script>
+
+</head>
+ <body>
+ <nav class="navbar navbar-inverse">
+     <div class="container-fluid">
+         <div class="navbar-header">
+             <a class="navbar-brand" href="#">WebSiteName</a>
+         </div>
+         <ul class="nav navbar-nav">
+             <li ><a th:href="@{/}">Enregistrement des Taches</a></li>
+             <li><a th:href="@{/liste}">Employer</a></li>
+             <li><a href="#">Page 2</a></li>
+
+
+                 <li class="dropdown">
+                     <a class="dropdown-toggle" data-toggle="dropdown" >Avancer
+                         <span class="caret"></span></a>
+                     <ul class="dropdown-menu">
+                         <li><a th:href="@{/consulter}">Consulter Historique</a></li>
+                         <li><a th:href="@{/tache}">Generer vos  Fichiers</a></li>
+
+
+
+                     </ul>
+                 </li>
+
+         </ul>
+         <form class="navbar-form navbar-left" th:action="@{/consulterByMot}">
+             <div class="input-group">
+                 <input type="text" class="form-control" required="required" placeholder="Search" name="matricule" th:value="${motcler}">
+                 <div class="input-group-btn">
+                     <button class="btn btn-default" type="submit">
+                         <i class="glyphicon glyphicon-search"></i>
+                     </button>
+                 </div>
+             </div>
+         </form>
+
+         <ul class="nav navbar-nav navbar-right">
+             <li><a th:href="@{ajouterEmployer}"><span class="glyphicon glyphicon-user"></span> New Employer</a></li>
+             <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+         </ul>
+     </div>
+
+
+
+
+
+ </nav>
+
+
+
+
+     <section layout:fragment="content">
+
+     
+     </section>
+
+
+
+
+</body>
+</html>

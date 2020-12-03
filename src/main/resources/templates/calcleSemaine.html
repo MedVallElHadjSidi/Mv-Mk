@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/ layout"
+      layout:decorator="layout">
+
+<head>
+
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <meta name="description" content="">
+     <meta name="author"      content="Sergey Pozhilov (GetTemplate.com)">
+<link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+
+<style type="text/css">
+    body {
+		font-family: 'Varela Round', sans-serif;
+	}
+	.modal-login {
+		color: #636363;
+		width: 350px;
+	}
+	.modal-login .modal-content {
+		padding: 20px;
+		border-radius: 5px;
+		border: none;
+	}
+	.modal-login .modal-header {
+		border-bottom: none;
+		position: relative;
+		justify-content: center;
+	}
+	.modal-login h4 {
+		text-align: center;
+		font-size: 26px;
+	}
+	.modal-login  .form-group {
+		position: relative;
+	}
+	.modal-login i {
+		position: absolute;
+		left: 13px;
+		top: 11px;
+		font-size: 18px;
+	}
+	.modal-login .form-control {
+		padding-left: 40px;
+	}
+	.modal-login .form-control:focus {
+		border-color: #00ce81;
+	}
+	.modal-login .form-control, .modal-login .btn {
+		min-height: 40px;
+		border-radius: 3px;
+	}
+	.modal-login .hint-text {
+		text-align: center;
+		padding-top: 10px;
+	}
+	.modal-login .close {
+        position: absolute;
+		top: -5px;
+		right: -5px;
+	}
+	.modal-login .btn {
+		background: #00ce81;
+		border: none;
+		line-height: normal;
+	}
+	.modal-login .btn:hover, .modal-login .btn:focus {
+		background: #00bf78;
+	}
+	.modal-login .modal-footer {
+		background: #ecf0f1;
+		border-color: #dee4e7;
+		text-align: center;
+		margin: 0 -20px -20px;
+		border-radius: 5px;
+		font-size: 13px;
+		justify-content: center;
+	}
+	.modal-login .modal-footer a {
+		color: #999;
+	}
+	.trigger-btn {
+		display: inline-block;
+		margin: 100px auto;
+	}
+	.haut{
+		margin-top: -320px;
+	}
+</style>
+</head>
+<body>
+<p></p>
+<p></p><p></p>
+<div  layout:fragment="content">
+<div class="container">
+<div class="row">
+<div class="col-md-4">
+<div class="panel panel-primary">
+<div class="panel-heading">Chercher les taches des Employers </div>
+
+<div class="panel-body">
+<form th:action="@{taches}" method="post">
+<div class="form-group">
+<label class="control-label">Matricule</label>
+<input type="text" name="motcler"  class="form-control"  required="required" th:value="${m}">
+<label class="control-label">Heure Arrivée</label>
+
+
+<input type="date" name="Duree1"  class="form-control"  required="required" th:value="${d1}">
+<label class="control-label">Heure Départ</label>
+<input type="date" name="Duree2"  class="form-control" required="required"  th:value="${d2}">
+<p></p>
+
+<button type="submit" class="btn btn-primary">ok</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+<div class="col-md-8">
+<div class="panel panel-primary">
+<div class="panel-heading">Les Taches de l'employer</div>
+
+<div class="panel-body">
+<div  th:if="${d1}">
+     <a  th:href="@{'/download?d1='+${d1}+'&d2='+${d2}+'&m='+${m}}" style="float: right;margin-bottom: 6px; margin-top:-10px; "><img th:src="@{/images/exel.png}" style="width: 40px;"></a>
+
+          <!-- Button HTML (to Trigger Modal) -->
+          <a id="note" style="float: left;margin-bottom: 6px; margin-top:-10px; "><img th:src="@{/images/notes.jpg}" style="width: 100px;"></a>
+
+               </div>
+    
+     <table class="table table-bordered">
+
+<thead><tr>
+<td>ID</td>
+<td>Date</td>
+<td>DB</td>
+<td>DF</td>
+<td>HN</td>
+<td>HS15%</td>
+<td>HS40%</td>
+<td>HS50%</td>
+<td>HS100%</td>
+<td>PANIER</td>
+<td>H-T</td>
+
+</tr>
+
+</thead>
+<tbody>
+<tr th:each="tache:${taches}">
+<td th:text="${tache.id}"></td>
+<td th:text="${tache.dateday}"></td>
+<td th:text="${tache.datedebut}"></td>
+<td th:text="${tache.datefint}"></td>
+<td th:text="${tache.nbreHtNormale}"></td>
+<td th:text="${tache.nbreSup15}"></td>
+<td th:text="${tache.nbreSup40}"></td>
+<td th:text="${tache.nbreSup50}"></td>
+<td th:text="${tache.nbreSup100}"></td>
+<td th:text="${tache.panier}"></td>
+<td th:text="${tache.total_Heure}"></td>
+
+
+
+
+
+
+</tr>
+<tr>
+     <td th:if="${taches}" COLSPAN="4" ><center>SOMME</center></td>
+     <td th:text="${sommehn}"></td>
+     <td th:text="${somme15}"></td>
+     <td th:text="${somme40}"></td>
+     <td th:text="${somme50}"></td>
+     <td th:text="${somme100}"></td>
+     <td th:text="${panier}"></td>
+     <td th:text="${sommeHt}"></td>
+
+     <td></td>
+
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

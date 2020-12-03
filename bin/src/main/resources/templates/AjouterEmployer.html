@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="tem">
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"
+th:href="@{css/bootstrap.min.css}"
+/>
+
+</head>
+<body>
+<p></p>
+<p></p><p></p>
+<div  layout:fragment="content">
+<div class="container">
+<div class="row">
+<div class="col-md-6">
+<div class="panel panel-primary">
+<div class="panel-heading">Ajouter Employer</div>
+
+<div class="panel-body">
+<form th:action="@{AjouterEm}" method="post">
+
+<div class="form-group">
+<label class="control-label">Matricule</label>
+<input type="text" name="matircule"  class="form-control" required="required" value="000">
+<label class="control-label">Nom</label>
+<input type="text" name="nom"  class="form-control" required="required">
+<label class="control-label">Fonction</label>
+<input type="text" name="fonction"  class="form-control"  required="required">
+
+<p class="spacer"></p>
+<button type="submit" class="btn btn-primary">ok</button>
+</div>
+
+ <img th:src="@{${valider}}" style="width: 40px;"/>
+ 
+ <label th:text=${matricule}>
+ 
+ 
+ </label>
+
+
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

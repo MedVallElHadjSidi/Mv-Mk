@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+
+
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"
+          th:href="@{css/bootstrap.min.css}"
+    />
+    <script type="text/javascript" src="Js/jquery-3.5.1.min.js/" th:src="@{Js/jquery-3.5.1.min.js}"></script>
+    <script type="text/javascript" src="Js/bootstrap.min.js/" th:src="@{Js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<p></p>
+<p></p><p></p>
+<div  layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Liste des Employers </div>
+
+                    <div class="panel-body">
+                        <div class="col-md-12">
+
+
+
+
+                                    <table class="table table-bordered">
+
+                                        <thead><tr>
+                                            <td>Matricule</td>
+                                            <td>Nom</td>
+                                            <td>fonction</td>
+
+                                        </tr>
+
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="employer:${employers}">
+                                            <td th:text="${employer.id}"></td>
+                                            <td th:text="${employer.Nom}"></td>
+                                            <td th:text="${employer.fonction}"></td>
+                                            <td ><a onclick="confirm('etes vous sur de supprimer cet Employer  :')" th:href="@{/delete(id=${employer.id},page=${pageactuel})}" class="btn btn-danger">delete</a></td>
+                                            <td ><a  th:href="@{/chercherbyid(id=${employer.id})}" class="btn btn-success">Update</a></td>
+
+
+
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                <ul  class="nav nav-pills">
+                                    <li th:class="${pageactuel==status.index}?'active':''" th:each="pag,status:${pages}">
+                                        <a th:href="@{/liste(page=${status.index})}" th:text="${status.index}"></a>
+
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

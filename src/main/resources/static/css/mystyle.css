@@ -1,0 +1,27 @@
+ body{
+    font-family: 'Roboto', sans-serif;
+    background-image:url("http://getwallpapers.com/wallpaper/full/0/8/1/375961.jpg"); 
+    background-size:cover; 
+  }
+
+a{
+  color: #1985e2;
+}
+
+.col_g{
+color: #887c7c;
+}
+.form-control{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 1px;
+    box-shadow: none;
+
+}
+.submit_h{
+
+color: #fff;
+background-color:#0067b8;
+
+}

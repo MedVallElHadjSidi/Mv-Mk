@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/ layout"
+      layout:decorator="layout">
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"
+th:href="@{css/bootstrap.min.css}"
+/>
+
+</head>
+<body>
+<p></p>
+<p></p><p></p>
+<div layout:fragment="content">
+<div class="container">
+<div class="row">
+<div class="col-md-6">
+<div class="panel panel-primary">
+<div class="panel-heading">Travail</div>
+
+<div class="panel-body">
+<form th:action="@{chaquejours}" method="post">
+
+<div class="form-group">
+<label class="control-label">Matricule</label>
+<input type="text" name="matircule"  class="form-control" required="required">
+<label class="control-label">Heure Arrivée</label>
+<input type="time" name="Dureedb"  class="form-control" required="required" >
+<label class="control-label">Heure Départ</label>
+<input type="time" name="Dureef"  class="form-control"  required="required">
+<label class="control-label">Date</label>
+<input type="date" name="Dureej"  class="form-control" required="required">
+<p class="spacer"></p>
+<button type="submit" class="btn btn-primary">ok</button>
+</div>
+ <img th:src="@{${etat}}" style="width: 40px;"/>
+  <label th:text=${comment}>
+
+
+ </label>
+
+
+</form>
+</div>
+</div>
+</div>
+ <div th:if="${pagetaches}">
+  <div class="col-md-6">
+   <div class="panel panel-primary">
+    <div class="panel-heading">Liste des Employers </div>
+    <div class="panel-body">
+     <div class="col-md-12">
+
+
+
+
+      <table class="table table-bordered">
+
+       <thead><tr>
+        <td>DateJour</td>
+        <td>DateDepart</td>
+        <td>DateAriiver</td>
+        <td>H-T/Jour</td>
+        <td>H-N</td>
+
+
+       </tr>
+
+       </thead>
+       <tbody>
+       <tr th:each="tache:${pagetaches}">
+        <td th:text="${tache.dateday}"></td>
+        <td th:text="${tache.datedebut}"></td>
+        <td th:text="${tache.datefint}"></td>
+        <td th:text="${tache.total_Heure}"></td>
+        <td th:text="${tache.nbreHtNormale}"></td>
+
+
+
+       </tr>
+
+       </tbody>
+      </table>
+
+      <ul  class="nav nav-pills">
+       <li th:class="${pagecourant==status.index}?'active':''" th:each="pag,status:${pages}">
+        <a th:href="@{/consulterByMot(matricule=${motcler},page=${status.index})}" th:text="${status.index}"></a>
+
+       </li>
+
+
+      </ul>
+     </div>
+    </div>
+
+   </div>
+
+  </div>
+ </div>
+</div>
+</div>
+</div>
+</body>
+</html>
