@@ -279,6 +279,39 @@ public class TachesContolleur {
 				Taches tv=null;
 				Taches tach=tachesim.SommeJous(tache.getEmployer().getId());
 				
+				if(tache.getEmployer().getFonction().equals("Securiter")) {
+					System.out.println("securiter");
+					if(tach==null) {
+						Taches t=tachesim.save(imetier.SecuriryDebut(tache));
+						
+					}
+					else {
+						
+						System.out.println("numero semaine tache"+imetier.NUmeroweekend(tache.getDateday()));
+					System.out.println("debut wekend tache"+imetier.DebutWeekend(tache.getDateday()));
+				
+						if(imetier.IdentiqueWeekend(tache.getDateday(),tach.getDateday())) {
+							System.out.println("m w");
+						Taches tr=tachesim.save(imetier.SecuritySuplementaire(tache, tach));
+						
+							
+						}
+						else {
+							
+							Taches ts=tachesim.save(imetier.SecuriryDebut(tache));
+						}
+						
+						
+						
+					}
+					
+					
+					
+				}
+				
+				else {
+					System.out.println("n'estpas securiter");
+				
 
 
 				if(tach==null){
@@ -395,7 +428,7 @@ public class TachesContolleur {
 
 
 
-
+				}
 
 			}
 			catch (Exception e) {
