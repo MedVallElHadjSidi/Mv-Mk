@@ -30,8 +30,6 @@ import com.example.demo.entity.Taches;
 				t.setPanier(1);
 
 			}
-
-
 		}
 		else {
 			t.setPanier(1);
@@ -3671,10 +3669,20 @@ import com.example.demo.entity.Taches;
 	  @Override
 	  public int CalulePanier(Taches t) {
 	  	int n=0;
-	  	if (NombreHeureJours(ConverteDate(t.getDatedebut()),ConverteDate(t.getDatefint()))>=9)
+	  	if(t.getDateday().getDay()==5) {
+	  		if(NombreHeureJours(ConverteDate(t.getDatedebut()),ConverteDate(t.getDatefint()))>=4) {
+	  			n=n+1;
+	  		}
+	  		
+	  		
+	  	}
+	  	else if (NombreHeureJours(ConverteDate(t.getDatedebut()),ConverteDate(t.getDatefint()))>=9)
 	  	{
 	  		n=n+1;
 		}
+	  	else {
+	  		n=0;
+	  	}
 		  return n;
 	  }
 

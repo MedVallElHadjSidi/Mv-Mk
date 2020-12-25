@@ -8,7 +8,20 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"
 th:href="@{css/bootstrap.min.css}"
 />
-     <script type="text/javascript" src="Js/jquery-3.5.1.min.js/" th:src="@{Js/jquery-3.5.1.min.js}"></script>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"
+th:href="@{css/bootstrap.min.css}"
+/>
+<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"
+th:href="@{css/bootstrap-theme.min.css}"
+/>
+ 
+     <script type="text/javascript" src="Js/bootstrap.min.js" th:src="@{Js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="Js/bootstrap.min.js" th:src="@{Js/jquery-3.5.1.min.js}"></script>
+<style type="text/css">
+.alert-info1{
+background-color:blue;
+}
+</style>
 </head>
 <body>
 <p></p>
@@ -51,7 +64,7 @@ th:href="@{css/bootstrap.min.css}"
                     </div>
                     <p class="spacer"></p>
 
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-share-alt"></span>Update</button>
 
 
 
@@ -92,12 +105,15 @@ th:href="@{css/bootstrap.min.css}"
 
                     <button type="submit" class="btn btn-primary" >Ajouter</button>
                     <p class="spacer"></p>
-                    <img th:src="@{${valider}}" style="width: 40px;"/>
+                   
 
-                    <label th:text=${matricule}>
-
-
-                    </label>
+               <div class="alert alert-default"> <img th:src="@{${valider}}" style="width: 40px;"/><label th:text=${matricule}   ></label></div>
+       
+     	<div class="alert alert-default" role="alert" th:if="${nv}!=null">
+				  <img th:src="@{${nv}}" style="width: 40px;"/><label th:text=${matricule}   ></label> </div>
+			
+				
+                 
                 </div>
 
             </form>

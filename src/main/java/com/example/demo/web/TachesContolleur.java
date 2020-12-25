@@ -166,22 +166,26 @@ public class TachesContolleur {
 			@RequestParam(name = "nom")String nom,
 			@RequestParam(name = "fonction")String fonction,Model model) {
 		String valider="";
+		String nv="";
 		String ma="";
 		Employer em=new Employer(matricule,nom,fonction);
 		if(!employerim.existsById(matricule)) {
 			Employer emmodel= employerim.save(em);
 			valider="images/valider.jpg";
+			nv=null;
 			ma="L'ajout de l'employer "+emmodel.getId()+" "+"avec success";
 		}
 
 		
 		else {
-			valider="images/dow22.png";
+			nv="images/dow22.png";
+			valider=null;
 			
 			ma="desoler cet matricule existe deja!";
 			
 		}
 		model.addAttribute("valider", valider);
+		model.addAttribute("nv", nv);
 		model.addAttribute("matricule", ma);
 
 	
@@ -252,9 +256,10 @@ public class TachesContolleur {
 							  @RequestParam(name="Dureedb")String db,
 							  @RequestParam(name = "Dureef")String df,
 							  @RequestParam(name = "Dureej")String date) {
-		String valider="";
-		String failse="";
+		String valider=null;
+		String failse=null;
 		String comment="";
+		String mydate=null;
 
 
 		Taches tache=new Taches();
@@ -270,6 +275,15 @@ public class TachesContolleur {
 				tache.setDateday(journee);
 				tache.setDatedebut(dureeb);
 				tache.setDatefint(dureef);
+				mydate=formatter.format(journee);
+				System.out.println(mydate);
+				Calendar calendar=Calendar.getInstance();
+				calendar.setTime(tache.getDateday());
+				
+				System.out.println("Jour"+calendar.MONDAY);
+				  
+				
+				
 
 				//System.out.println("DayOfMonth"+calendar.DAY_OF_MONTH);
 
@@ -283,6 +297,20 @@ public class TachesContolleur {
 					System.out.println("securiter");
 					if(tach==null) {
 						Taches t=tachesim.save(imetier.SecuriryDebut(tache));
+						if(t!=null) {
+							valider="images/valider.jpg";
+							failse=null;
+							comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+									
+							
+						}
+						else {
+							
+							failse="images/dow22.png";
+							valider=null;
+							comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;;
+									
+						}
 						
 					}
 					else {
@@ -293,12 +321,39 @@ public class TachesContolleur {
 						if(imetier.IdentiqueWeekend(tache.getDateday(),tach.getDateday())) {
 							System.out.println("m w");
 						Taches tr=tachesim.save(imetier.SecuritySuplementaire(tache, tach));
-						
+						if(tr!=null) {
+							valider="images/valider.jpg";
+							failse=null;
+							comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;;
+									
+							
+						}
+						else {
+							
+							failse="images/dow22.png";
+							valider=null;
+							comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;;
+									
+						}
 							
 						}
 						else {
 							
 							Taches ts=tachesim.save(imetier.SecuriryDebut(tache));
+							if(ts!=null) {
+								valider="images/valider.jpg";
+								failse=null;
+								comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;;
+										
+								
+							}
+							else {
+								
+								failse="images/dow22.png";
+								valider=null;
+								comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;;
+										
+							}
 						}
 						
 						
@@ -319,16 +374,58 @@ public class TachesContolleur {
 					if (tache.getDateday().getDay()==5){
 						System.out.println("tach null ms tache Vendredi ");
 						Taches taches=tachesim.save(imetier.TACHESCOMPLETSUPVendredi(tache));
+						if(taches!=null) {
+							valider="images/valider.jpg";
+							failse=null;
+							comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;;
+									
+							
+						}
+						else {
+							
+							failse="images/dow22.png";
+							valider=null;
+							comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+									
+						}
 
 					}
 					else if (tache.getDateday().getDay()==6|| tache.getDateday().getDay()==0){
 						System.out.println("tach null ms tache wekend ");
 						Taches taches=tachesim.save(imetier.TacheWeekend(tache));
+						if(taches!=null) {
+							valider="images/valider.jpg";
+							failse=null;
+							comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+									
+							
+						}
+						else {
+							
+							failse="images/dow22.png";
+							valider=null;
+							comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+									
+						}
 
 					}
 					else{
 						System.out.println("tach null ms tache un jour du semanine ");
 						Taches taches=tachesim.save(imetier.TacheCompletJour(tache));
+						if(taches!=null) {
+							valider="images/valider.jpg";
+							failse=null;
+							comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+									
+							
+						}
+						else {
+							
+							failse="images/dow22.png";
+							valider=null;
+							comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+									
+						}
 
 					}
 
@@ -344,6 +441,20 @@ public class TachesContolleur {
 					if (tache.getDateday().getDay()==6||tache.getDateday().getDay()==0){
 						System.out.println("tach !null ms tache weekend");
 						Taches taches=tachesim.save(imetier.TacheWeekend(tache));
+						if(taches!=null) {
+							valider="images/valider.jpg";
+							failse=null;
+							comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+									
+							
+						}
+						else {
+							
+							failse="images/dow22.png";
+							valider=null;
+							comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+									
+						}
 
 
 					}
@@ -360,12 +471,40 @@ public class TachesContolleur {
 									System.out.println("tach !null  tache n'est pas wekend  et tache et tach meme wekend +vndr");
 
 									Taches taches=tachesim.save(imetier.TACHESCOMPLETVendredi(tache,tach));
+									if(taches!=null) {
+										valider="images/valider.jpg";
+										failse=null;
+										comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+												
+										
+									}
+									else {
+										
+										failse="images/dow22.png";
+										valider=null;
+										comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+												
+									}
 
 								}
 								else {
 									System.out.println("tach !null  tache n'est pas wekend  et tache et tach meme  wekend  m #j");
 
 									Taches taches=tachesim.save(imetier.TachesCompletJoursSup(tache,tach));
+									if(taches!=null) {
+										valider="images/valider.jpg";
+										failse=null;
+										comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+												
+										
+									}
+									else {
+										
+										failse="images/dow22.png";
+										valider=null;
+										comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+												
+									}
 
 								}
 
@@ -374,10 +513,38 @@ public class TachesContolleur {
 							else{
 								if (tache.getDateday().getDay()==5){
 									Taches taches=tachesim.save(imetier.MemeJours(tache,tach));
+									if(taches!=null) {
+										valider="images/valider.jpg";
+										failse=null;
+										comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+												
+										
+									}
+									else {
+										
+										failse="images/dow22.png";
+										valider=null;
+										comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+												
+									}
 
 								}
 								else {
 									Taches taches=tachesim.save(imetier.MemeJours(tache,tach));
+									if(taches!=null) {
+										valider="images/valider.jpg";
+										failse=null;
+										comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+												
+										
+									}
+									else {
+										
+										failse="images/dow22.png";
+										valider=null;
+										comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+												
+									}
 
 								}
 
@@ -391,16 +558,58 @@ public class TachesContolleur {
 							if (tache.getDateday().getDay()==1){
 								System.out.println("on 'est la lundi ");
 								Taches taches=tachesim.save(imetier.TacheCompletJour(tache));
+								if(taches!=null) {
+									valider="images/valider.jpg";
+									failse=null;
+									comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+											
+									
+								}
+								else {
+									
+									failse="images/dow22.png";
+									valider=null;
+									comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+											
+								}
 
 							}
 
 						else if (tache.getDateday().getDay()==5){
 								Taches taches=tachesim.save(imetier.TACHESCOMPLETSUPVendredi(tache));
+								if(taches!=null) {
+									valider="images/valider.jpg";
+									failse=null;
+									comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+											
+									
+								}
+								else {
+									
+									failse="images/dow22.png";
+									valider=null;
+									comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+											
+								}
 
 							}
 							else{
 								System.out.println("on 'est la ");
 								Taches taches=tachesim.save(imetier.TacheCompletJour(tache));
+								if(taches!=null) {
+									valider="images/valider.jpg";
+									failse=null;
+									comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;
+											
+									
+								}
+								else {
+									
+									failse="images/dow22.png";
+									valider=null;
+									comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;
+											
+								}
 							}
 
 
@@ -429,6 +638,12 @@ public class TachesContolleur {
 
 
 				}
+				
+				model.addAttribute("valide", valider);
+				model.addAttribute("failse", failse);
+				model.addAttribute("comment", comment);
+		
+
 
 			}
 			catch (Exception e) {
