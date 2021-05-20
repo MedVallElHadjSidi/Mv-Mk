@@ -25,7 +25,7 @@ th:href="@{css/bootstrap-theme.min.css}"
 <div  layout:fragment="content">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Liste des Employers </div>
 
@@ -39,7 +39,9 @@ th:href="@{css/bootstrap-theme.min.css}"
 
                                         <thead><tr>
                                             <td>Matricule</td>
-                                            <td>Nom</td>
+                                            <td>Nom Complet</td>
+                                            <td>NNI  </td>
+                                            <td>Categorie</td>
                                             <td>fonction</td>
 
                                         </tr>
@@ -49,6 +51,8 @@ th:href="@{css/bootstrap-theme.min.css}"
                                         <tr th:each="employer:${employers}">
                                             <td th:text="${employer.id}"></td>
                                             <td th:text="${employer.Nom}"></td>
+                                              <td th:text="${employer.nni}"></td>
+                                                <td th:text="${employer.categorie}"></td>
                                             <td th:text="${employer.fonction}"></td>
                                             <td ><a onclick="confirm('etes vous sur de supprimer cet Employer  :')" th:href="@{/delete(id=${employer.id},page=${pageactuel})}" class="btn btn-danger">delete <span class="glyphicon glyphicon-trash"></span></a> </td>
                                             <td ><a  th:href="@{/chercherbyid(id=${employer.id})}" class="btn btn-success">Update  <span class="glyphicon glyphicon-pencil"></span></a></td>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/ layout"
-      layout:decorator="layout">
+      layout:decorator="tem">
 
 <head>
 
@@ -15,7 +15,7 @@
 th:href="@{css/bootstrap.min.css}"
 />
 <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"
-th:href="@{css/bootstrap-theme.min.css}" 
+th:href="@{css/bootstrap-theme.min.css}"
 />
  
      <script type="text/javascript" src="Js/bootstrap.min.js" th:src="@{Js/bootstrap.min.js}"></script>
@@ -112,7 +112,7 @@ th:href="@{css/bootstrap-theme.min.css}"
 <div class="panel-heading">Chercher les taches des Employers </div>
 
 <div class="panel-body">
-<form th:action="@{taches}" method="post">
+<form th:action="@{tachesUser}" method="post">
 <div class="form-group">
 <label class="control-label">Matricule</label>
 <input type="text" name="motcler"  class="form-control"  required="required" th:value="${m}">
@@ -147,7 +147,6 @@ th:href="@{css/bootstrap-theme.min.css}"
      <table class="table table-bordered">
 
 <thead><tr>
-<td>ID</td>
 <td>Date</td>
 <td>DB</td>
 <td>DF</td>
@@ -159,13 +158,12 @@ th:href="@{css/bootstrap-theme.min.css}"
 <td>PANIER</td>
 <td>H-T</td>
 
-
 </tr>
 
 </thead>
 <tbody>
 <tr th:each="tache:${taches}">
-<td th:text="${tache.id}"></td>
+
 <td th:text="${tache.dateday}"></td>
 <td th:text="${tache.datedebut}"></td>
 <td th:text="${tache.datefint}"></td>
@@ -184,7 +182,7 @@ th:href="@{css/bootstrap-theme.min.css}"
 
 </tr>
 <tr>
-     <td th:if="${taches}" COLSPAN="4" ><center>SOMME</center></td>
+     <td th:if="${taches}" COLSPAN="3" ><center>SOMME</center></td>
      <td th:text="${sommehn}"></td>
      <td th:text="${somme15}"></td>
      <td th:text="${somme40}"></td>

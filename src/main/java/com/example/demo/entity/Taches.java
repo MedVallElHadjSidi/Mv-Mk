@@ -12,15 +12,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne; import
   javax.persistence.Temporal; import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
   @Entity 
   public class Taches {
   
   @Id 
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  
+
   @Temporal(TemporalType.DATE) 
   @Column(nullable = false)
+  
   private Date dateday;
   @Column(nullable = false)
   @Temporal(TemporalType.TIME) 

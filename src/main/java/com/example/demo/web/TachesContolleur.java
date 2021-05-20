@@ -19,36 +19,52 @@ import javax.servlet.ServletContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.DAO.EmployerIm;
+import com.example.demo.DAO.MoisRepository;
 import com.example.demo.DAO.TachesIm;
 import com.example.demo.Metier.IMetier;
 import com.example.demo.entity.Employer;
+import com.example.demo.entity.Mois;
 import com.example.demo.entity.Taches;
 import com.example.demo.excel.ExcelFileExporter;
+import com.example.demo.excel.ExcelFileRapportTotal;
+import com.example.demo.model.ModelRapportTotal;
+import com.example.demo.model.ModelRendementMois;
 
 
 @Controller
 public class TachesContolleur {
 	@Autowired
 	ExcelFileExporter exel;
+	
+	
+	@Autowired
+	ExcelFileRapportTotal exTotal;
 	@Autowired
 	private AccountService accountService;
 
 	@Autowired
 	private UtilisateurRepository utilisateurRepository;
+	@Autowired
+	private MoisRepository moisRepository;
+	
 	
 	
 	
@@ -66,10 +82,66 @@ public class TachesContolleur {
 	
 	Employer em=new Employer();
 	
+	@RequestMapping(value = "/tachesUser",method = RequestMethod.POST)
+	public String sommesSemaine(Model model,@RequestParam(name = "Duree1")String d1,
+			@RequestParam(name = "Duree2")String d2,
+			@RequestParam(name = "motcler")String matricule,@RequestParam(name = "page",defaultValue = "0")int page) {
+		 String result="";
+	
+		Date dat=null;
+		Date dt2=null;
+		String m=matricule;
+		List<Taches>taches=new ArrayList<>();
+		if(employerim.existsById(matricule)) {
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+			try {
+				dat = formatter.parse(d1);
+				 dt2=formatter.parse(d2);
+				taches=tachesim.SommeSemaine(dat, dt2, matricule);
+				int somme15=tachesim.SommeSup15(dat,dt2,matricule);
+				int somme40=tachesim.SommeSup40(dat,dt2,matricule);
+				model.addAttribute("sommehn",tachesim.SommeHN(dat,dt2,matricule));
+                model.addAttribute("somme15",somme15);
+                model.addAttribute("somme40",somme40);
+                model.addAttribute("somme50",tachesim.SommeSup50(dat,dt2,matricule));
+				model.addAttribute("somme100",tachesim.SommeSup100(dat,dt2,matricule));
+				model.addAttribute("panier",tachesim.SommePanier(dat,dt2,matricule));
+				model.addAttribute("sommeHt",tachesim.SommeHt(dat,dt2,matricule));
+				model.addAttribute("d1",d1);
+				model.addAttribute("d2",d2);
+				model.addAttribute("m",matricule);
+			
+
+
+				
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			model.addAttribute("taches", taches);
+		
+		}
+
+
+			return  "calculSemaineUser";
+
+	
+
+
+		
+
+	}
+	
 	@RequestMapping(value = "/taches",method = RequestMethod.POST)
 	public String sommes(Model model,@RequestParam(name = "Duree1")String d1,
 			@RequestParam(name = "Duree2")String d2,
-			@RequestParam(name = "motcler")String matricule,@RequestParam(name = "page",defaultValue = "0")int page) {
+			@RequestParam(name = "motcler")String matricule,@RequestParam(name = "page",defaultValue = "0")int page,@AuthenticationPrincipal UserDetails currentUser) {
+		 String result="";
+		Utilisateur user=utilisateurRepository.findByUsername(currentUser.getUsername());
+		System.out.println(user.getNom());
 		Date dat=null;
 		Date dt2=null;
 		String m=matricule;
@@ -110,14 +182,63 @@ public class TachesContolleur {
 
 
 
-
-
+return "calcleSemaine";
 
 		
-		
 
-		return "calcleSemaine";
 	}
+	
+	@PostMapping("/GererRendement")
+	public String VerfierForm(Model model, @Valid @RequestParam(name = "matricule") String matricule,@Valid @RequestParam(name = "note1")String note1,@RequestParam(name = "note2")String note2,@RequestParam(name = "note3")String note3,@RequestParam(name = "note4")String note4) {
+		System.out.println("hello");
+		System.out.println(note1);
+		Date date=new Date();
+		String mot="";
+		double n1=Double.parseDouble(note1);
+		double n2=Double.parseDouble(note2);
+		double n3=Double.parseDouble(note3);
+		double n4=Double.parseDouble(note4);
+		double rs=imetier.CalculeRendementMois(n1, n2, n3, n4);
+		Calendar calendar=Calendar.getInstance();
+		  calendar.setTime(date);
+		int annes=calendar.get(calendar.YEAR);
+		 int mois=calendar.get(calendar.MONTH)+1;
+		  
+		  Mois m=moisRepository.findByMoisAndAnneAndEmployerId(mois, annes, matricule);
+		  Employer em=employerim.findById(matricule).get();
+		  if(m==null&& em!=null) {
+			  Mois moi=new Mois();
+			
+			  moi.setAnne(annes);
+			  moi.setMois(mois);
+			  moi.setRendement(rs);
+			  moi.setEmployer(em);
+			Mois mt =  moisRepository.save(moi);
+			  if(mt!=null) {
+				  mot="rendement est genener avec success";
+					model.addAttribute("mot", mot);
+			  }
+			  else {
+				  mot="il ya un probleme";
+					model.addAttribute("mot", mot);
+			  }
+			  
+	  
+			  
+		  }
+		  else {
+			  System.out.println("on a rien faire");
+			  mot="vous avez deja affecter un rendements";
+				model.addAttribute("mot", mot);
+		  }
+
+
+		
+		
+		return "rendementmois";
+		
+	}
+	
 	@RequestMapping(value = "/liste",method = RequestMethod.GET)
 	public String ListeEmployer(Model model,@RequestParam(name = "page",defaultValue = "0") int page){
 		Page<Employer>employers=employerim.findAll(PageRequest.of(page,7));
@@ -232,16 +353,25 @@ public class TachesContolleur {
 	public String quoditienne(Model model,   @AuthenticationPrincipal UserDetails currentUser) {
 		Utilisateur user=utilisateurRepository.findByUsername(currentUser.getUsername());
 		System.out.println(user.getNom());
+		List<Employer>employers=employerim.findAll();
+		List<String>list=new ArrayList<String>();
 
 		for(Role r:user.getRoles()){
 			if(r.getRoleName().equals("USER")){
+				for(Employer e:employers) {
+					list.add(e.getId());
+					
+					
+				}
+				model.addAttribute("matricules", list);
+				
 
 
-				return "Jours";
+				return "pointage";
 
 			}
 			else if(r.getRoleName().equals("ADMIN")){
-				return  "tem";
+				return  "Jours";
 
 			}
 
@@ -255,15 +385,28 @@ public class TachesContolleur {
 							  @RequestParam(name = "matircule")String matricule,
 							  @RequestParam(name="Dureedb")String db,
 							  @RequestParam(name = "Dureef")String df,
-							  @RequestParam(name = "Dureej")String date) {
+							  @RequestParam(name = "Dureej")String date,
+							  @RequestParam(name = "ferier")String ferier) {
 		String valider=null;
 		String failse=null;
 		String comment="";
 		String mydate=null;
+		List<Employer>employers=employerim.findAll();
+		System.out.println(ferier);
+		List<String>list=new ArrayList<String>();
+		for(Employer e:employers) {
+			list.add(e.getId());
+			
+			
+		}
 
 
 		Taches tache=new Taches();
+		model.addAttribute("matricules", list);
+		
 		if(employerim.existsById(matricule)) {
+			
+			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			//SimpleDateFormat formatter7 = new SimpleDateFormat("MM-dd-yyyy");
 			DateFormat formatter2 = new SimpleDateFormat("HH:mm");
@@ -278,6 +421,7 @@ public class TachesContolleur {
 				mydate=formatter.format(journee);
 				System.out.println(mydate);
 				Calendar calendar=Calendar.getInstance();
+				
 				calendar.setTime(tache.getDateday());
 				
 				System.out.println("Jour"+calendar.MONDAY);
@@ -289,11 +433,39 @@ public class TachesContolleur {
 
 				em=(Employer)employerim.findById(matricule).get();
 				tache.setPanier(imetier.CalulePanier(tache));
+				int ht=imetier.NombreHeureJours(imetier.ConverteDate(dureeb),imetier.ConverteDate(dureef));
+				tache.setTotal_Heure(ht);
+				
 				tache.setEmployer(em);
 				Taches tv=null;
 				Taches tach=tachesim.SommeJous(tache.getEmployer().getId());
+				if(ferier.equals("ferie")) {
+					int mv=imetier.NombreHeureJours(imetier.ConverteDate(dureeb),imetier.ConverteDate(dureef));
+					tache.settHs(mv);
+					tache.setNbreSup100(mv);
+					
+					Taches ts=tachesim.save(imetier.SecuriryDebut(tache));
+					if(ts!=null) {
+						valider="images/valider.jpg";
+						failse=null;
+						comment="L'ajout  de la tache de l'employer "+tache.getEmployer().getId()+" "+"avec success"+""+"Date"+":"+mydate;;
+								
+						
+					}
+					else {
+						
+						failse="images/dow22.png";
+						valider=null;
+						comment="desoler  la tache de l'employer "+tache.getEmployer().getId()+" "+"est echouer"+""+"Date"+":"+mydate;;
+								
+					}
+				}
+					
+					
 				
-				if(tache.getEmployer().getFonction().equals("Securiter")) {
+				
+				
+				else if(tache.getEmployer().getFonction().equals("securiter")) {
 					System.out.println("securiter");
 					if(tach==null) {
 						Taches t=tachesim.save(imetier.SecuriryDebut(tache));
@@ -658,7 +830,7 @@ public class TachesContolleur {
 			model.addAttribute("comment",comment);
 		}
 
-		return "Jours";
+		return "pointage";
 	}
 /*
 	@RequestMapping(value = "/chaquejours",method = RequestMethod.POST)
@@ -824,15 +996,13 @@ public class TachesContolleur {
 			 dat1=formatter.parse(d1);
 			  dat2=formatter.parse(d2);
 
-
-
-
-
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-Disposition", "attachment; filename=taches.xlsx");
 			List<Taches>taches= tachesim.SommeSemaine(dat1,dat2,m);
+
+			if(taches.size()>0) {
 			ByteArrayInputStream stream = exel.contactListToExcelFile(taches);
-			IOUtils.copy(stream, response.getOutputStream());
+			IOUtils.copy(stream, response.getOutputStream());}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -840,6 +1010,138 @@ public class TachesContolleur {
 
 
 	}
+	@RequestMapping(value = "/downloadTota",method = RequestMethod.POST)
+	public void FichierExcelTotal(HttpServletResponse response,@RequestParam(name = "d1") String d1, @RequestParam(name = "d2") String d2) {
+	//	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		List<ModelRapportTotal>modelRapportTotals=new ArrayList<ModelRapportTotal>();
+		Date date =null;
+		Date date2=null;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		List<Employer>em=employerim.findAll();
+		try {
+			 date=formatter.parse(d1);
+			 date2=formatter.parse(d2);
+		//	List<Taches>taches=tachesim.findAll();
+		System.out.println(date);
+			Mois ms =new Mois();
+			
+
+		//	ModelRapportTotal m=new ModelRapportTotal();
+			Calendar calendar=Calendar.getInstance();
+			calendar.setTime(date2);
+	
+			for(Employer e:em) {
+				 ms=moisRepository.findByMoisAndAnneAndEmployerId(calendar.get(calendar.MONTH)+1, calendar.get(calendar.YEAR),e.getId());
+					//System.out.println("size e"+e.getTachCollection().size());
+				if(e.getTachCollection()!=null) {
+					
+					if(ms!=null) {
+						System.out.println("ms !=null");
+				//	System.out.println(tachesim.SommeHN(date, date2, e.getId()));
+					
+					ModelRapportTotal modelRapportTotal=new ModelRapportTotal();
+					modelRapportTotal.setMatricule(e.getId());
+					modelRapportTotal.setNom(e.getNom());
+					modelRapportTotal.setFonction(e.getFonction());
+		
+				modelRapportTotal.setSommeHn(tachesim.SommeHN(date, date2, e.getId()));
+				modelRapportTotal.setSommeHs15(tachesim.SommeSup15(date, date2, e.getId()));
+				modelRapportTotal.setSommeHs40(tachesim.SommeSup40(date, date2, e.getId()));
+				modelRapportTotal.setSomme50(tachesim.SommeSup50(date, date2, e.getId()));
+				modelRapportTotal.setSomme100(tachesim.SommeSup100(date, date2, e.getId()));
+				modelRapportTotal.setSommeHt(tachesim.SommeHt(date, date2, e.getId()));
+				modelRapportTotal.setSommepaniers(tachesim.SommePanier(date, date2,e.getId()));
+				
+					modelRapportTotal.setRendement(ms.getRendement());
+				modelRapportTotals.add(modelRapportTotal);
+					}
+					else {
+						System.out.println("ms==null");
+						ModelRapportTotal modelRapportTotal=new ModelRapportTotal();
+						modelRapportTotal.setMatricule(e.getId());
+						modelRapportTotal.setNom(e.getNom());
+						modelRapportTotal.setFonction(e.getFonction());
+			
+					modelRapportTotal.setSommeHn(tachesim.SommeHN(date, date2, e.getId()));
+					modelRapportTotal.setSommeHs15(tachesim.SommeSup15(date, date2, e.getId()));
+					modelRapportTotal.setSommeHs40(tachesim.SommeSup40(date, date2, e.getId()));
+					modelRapportTotal.setSomme50(tachesim.SommeSup50(date, date2, e.getId()));
+					modelRapportTotal.setSomme100(tachesim.SommeSup100(date, date2, e.getId()));
+					modelRapportTotal.setSommeHt(tachesim.SommeHt(date, date2, e.getId()));
+					modelRapportTotal.setSommepaniers(tachesim.SommePanier(date, date2,e.getId()));
+					
+						modelRapportTotal.setRendement(0);
+					modelRapportTotals.add(modelRapportTotal);
+						}
+		//		modelRapportTotal.setRendement((moisRepository.findByMoisAndAnneAndEmployerId(, calendar.get(calendar.YEAR), t.getEmployer().getId())).getRendement());
+	
+				
+				
+			}
+				else {
+					ModelRapportTotal modelRapportTotal=new ModelRapportTotal();
+					modelRapportTotal.setMatricule(e.getId());
+					modelRapportTotal.setNom(e.getNom());
+					modelRapportTotal.setFonction(e.getFonction());
+					if(ms!=null) {
+					//	ModelRapportTotal modelRapportTotal=new ModelRapportTotal();
+						
+						modelRapportTotal.setRendement(ms.getRendement());
+					//	modelRapportTotal.setSommeHn(tachesim.SommeHN(date, date2, e.getId()));
+					//	modelRapportTotal.setSommeHs15(tachesim.SommeSup15(date, date2, e.getId()));
+					//	modelRapportTotal.setSommeHs40(tachesim.SommeSup40(date, date2, e.getId()));
+					//	modelRapportTotal.setSomme50(tachesim.SommeSup50(date, date2, e.getId()));
+				//		modelRapportTotal.setSomme100(tachesim.SommeSup100(date, date2, e.getId()));
+				//		modelRapportTotal.setSommeHt(tachesim.SommeHt(date, date2, e.getId()));
+				//		modelRapportTotal.setSommepaniers(tachesim.SommePanier(dat, date2,e.getId()));
+						modelRapportTotals.add(modelRapportTotal);
+							
+					}
+				
+					
+		
+						
+			
+				
+						
+					}
+					
+				
+			
+				
+				
+				
+			}
+	
+			try {
+				
+					response.setContentType("application/octet-stream");
+					response.setHeader("Content-Disposition", "attachment; filename=taches.xlsx");
+					ByteArrayInputStream stream = exTotal.contactListToExcelFile(modelRapportTotals);
+				IOUtils.copy(stream, response.getOutputStream());
+					
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	
+		
+		
+	
+		
+		
+		
+	}
+	
 
 
 

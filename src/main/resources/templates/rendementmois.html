@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/ layout"
+      layout:decorator="tem">
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"
+th:href="@{css/bootstrap.min.css}"
+/>
+<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"
+th:href="@{css/bootstrap-theme.min.css}"
+/>
+ 
+<script type="text/javascript" src="Js/bootstrap.min.js" th:src="@{Js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="Js/bootstrap.min.js" th:src="@{Js/jquery-3.5.1.min.js}"></script>
+<script type="text/javascript" src="Js/scriptedouble.js" th:src="@{Js/scriptedouble.js}"></script>
+
+
+
+
+</head>
+<body>
+<p></p>
+<p></p><p></p>
+<div layout:fragment="content">
+<div class="container m-1">
+<div class="row">
+<div class="col-md-6 m-12">
+<div class="panel panel-primary">
+<div class="panel-heading">CRITERS D'EVALUATION</div>
+
+<div class="panel-body">
+<form  th:action="@{GererRendement}" method="post" id="f" onsubmit="return verif_form()" >
+<div class="form-group">
+<label class="control-label">Matricule</label>
+<input type="text" name="matricule"   class="form-control" required="required">
+</div>
+<div class="form-group">
+<label class="control-label">Rendement et conscienceProfessionnelle</label>
+<input type="text" name="note1" id="note1"  class="form-control" required="required">
+</div>
+<div class="form-group">
+<label class="control-label">Respect horaires et assiduite</label>
+<input type="text" name="note2"   id="note2" class="form-control" required="required">
+</div>
+<div class="form-group">
+<label class="control-label">Soins portee aux installation materiels et locaux</label>
+<input type="text" name="note3"  id="note3" class="form-control" required="required">
+</div>
+<div class="form-group">
+<label class="control-label">Discipline-tenue et presentation</label>
+<input type="text" name="note4"  id="note4"  class="form-control" required="required">
+</div>
+<p class="spacer"></p>
+<button  class="btn btn-primary"  type="submit">ok</button>
+
+
+
+
+
+</form>
+<div>
+
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</body>
+</html>

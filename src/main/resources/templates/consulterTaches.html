@@ -30,13 +30,14 @@ th:href="@{css/bootstrap-theme.min.css}"
                     <div class="panel-heading">Liste des Employers </div>
                     <div class="panel-body">
                         <div class="col-md-12">
-
-
-
-
+                        
                                     <table class="table table-bordered">
+                                    
 
                                         <thead><tr>
+                                            <td>Matricule</td>
+                                            <td>Nom</td>
+                                            <td>Fonction</td>
                                             <td>DateJour</td>
                                             <td>DateDepart</td>
                                             <td>DateAriiver</td>
@@ -49,6 +50,9 @@ th:href="@{css/bootstrap-theme.min.css}"
                                         </thead>
                                         <tbody>
                                         <tr th:each="tache:${pagetaches}">
+                                         <td th:text="${tache.employer.id}"></td>
+                                          <td th:text="${tache.employer.Nom}"></td>
+                                           <td th:text="${tache.employer.fonction}"></td>
                                             <td th:text="${tache.dateday}"></td>
                                             <td th:text="${tache.datedebut}"></td>
                                             <td th:text="${tache.datefint}"></td>

@@ -3,10 +3,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.example.demo.DAO.MoisRepository;
 import com.example.demo.DAO.TachesIm;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -19,6 +21,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.example.demo.entity.Mois;
 import com.example.demo.entity.Taches;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,14 +32,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional 
 public class ExcelFileExporter {
 	@Autowired TachesIm tachesim;
+	@Autowired MoisRepository moisRepository;
+	
+	private String matricule;
+	Date date=new Date();
+
+	
 
 	public  ByteArrayInputStream contactListToExcelFile(List<Taches> taches) {
+		Row dataRow = null ;
 		   Taches tf=taches.get(taches.size()-1);
 
 	        System.out.println(tf.getDateday());
 	        System.out.println(taches.get(0).getDateday());
 	        System.out.println(tf.getEmployer().getId());
-	        System.out.println(tachesim.SommeSup15(taches.get(0).getDateday(), tf.getDateday(), tf.getEmployer().getId()));
+	       System.out.println(tachesim.SommeSup15(taches.get(0).getDateday(), tf.getDateday(), tf.getEmployer().getId()));
 
 		try(Workbook workbook = new XSSFWorkbook()){
 
@@ -97,11 +107,19 @@ public class ExcelFileExporter {
 			cell.setCellValue("H-Total");
 			cell.setCellStyle(headerCellStyle);
 			
-
+			cell = row.createCell(10);
+			cell.setCellValue("Rendement");
+			cell.setCellStyle(headerCellStyle);
+			 
+			cell = row.createCell(11);
+			cell.setCellValue("Matricule");
+			cell.setCellStyle(headerCellStyle);
+		
 	        // Creating data rows for each customer
-	        for(int i = 0; i < taches.size(); i++) {
-	        
-	        	 Row dataRow = sheet.createRow(i+1);
+	        for(int i =0; i < taches.size(); i++) {
+	        matricule=taches.get(i).getEmployer().getId();
+	        dataRow= sheet.createRow(i+1);
+	        	// Row dataRow = sheet.createRow(i+1);
 	        	dataRow.createCell(0).setCellValue(taches.get(i).getDateday());
 	        	dataRow.getCell(0).setCellStyle(CellStyle2);
 	        	dataRow.createCell(1).setCellValue(taches.get(i).getDatedebut());
@@ -118,12 +136,26 @@ public class ExcelFileExporter {
 				dataRow.createCell(7).setCellValue(taches.get(i).getNbreSup100());
 				dataRow.createCell(8).setCellValue(taches.get(i).getPanier());
 				dataRow.createCell(9).setCellValue(taches.get(i).getTotal_Heure());
+				dataRow.createCell(11).setCellValue(taches.get(i).getEmployer().getId());
+				date=taches.get(i).getDateday();
 
 
 
 	        }
-	     
+			Calendar calendar=Calendar.getInstance();
+			calendar.setTime(date);
 
+			  
+			int annes=calendar.get(calendar.YEAR);
+			 int mois=calendar.get(calendar.MONTH)+1;
+	        Mois moi=moisRepository.findByMoisAndAnneAndEmployerId(mois, annes, matricule);
+	        if(moi!=null) {
+	    	dataRow.createCell(10).setCellValue(moi.getRendement());}
+	        else {
+	        	dataRow.createCell(10).setCellValue(0);
+	        }
+	        
+	   
 
 
 
@@ -140,8 +172,7 @@ public class ExcelFileExporter {
 
 			Row dataRow1 = sheet.createRow(taches.size()+2);
 			dataRow1.createCell(2).setCellValue("sommes");
-
-
+		
 				dataRow1.createCell(3).setCellValue(tachesim.SommeHN(taches.get(0).getDateday(), tf.getDateday(), tf.getEmployer().getId()));
 				dataRow1.createCell(4).setCellValue(tachesim.SommeSup15(taches.get(0).getDateday(), tf.getDateday(), tf.getEmployer().getId()));
 				dataRow1.createCell(5).setCellValue(tachesim.SommeSup40(taches.get(0).getDateday(), tf.getDateday(), tf.getEmployer().getId()));

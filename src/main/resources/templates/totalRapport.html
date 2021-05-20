@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/ layout"
-      layout:decorator="layout">
+      layout:decorator="tem">
 
 <head>
 
@@ -15,7 +15,7 @@
 th:href="@{css/bootstrap.min.css}"
 />
 <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"
-th:href="@{css/bootstrap-theme.min.css}" 
+th:href="@{css/bootstrap-theme.min.css}"
 />
  
      <script type="text/javascript" src="Js/bootstrap.min.js" th:src="@{Js/bootstrap.min.js}"></script>
@@ -109,99 +109,28 @@ th:href="@{css/bootstrap-theme.min.css}"
 <div class="row">
 <div class="col-md-4">
 <div class="panel panel-primary">
-<div class="panel-heading">Chercher les taches des Employers </div>
+<div class="panel-heading">Generer fichiers Total </div>
 
 <div class="panel-body">
-<form th:action="@{taches}" method="post">
+<form th:action="@{downloadTota}" method="post">
 <div class="form-group">
-<label class="control-label">Matricule</label>
-<input type="text" name="motcler"  class="form-control"  required="required" th:value="${m}">
-<label class="control-label">Heure Arrivée</label>
+
+<label class="control-label">Date DEBUT</label>
 
 
-<input type="date" name="Duree1"  class="form-control"  required="required" th:value="${d1}">
+<input type="date" name="d1"  class="form-control"  required="required" th:value="${d1}">
 <label class="control-label">Heure Départ</label>
-<input type="date" name="Duree2"  class="form-control" required="required"  th:value="${d2}">
+<input type="date" name="d2"  class="form-control" required="required"  th:value="${d2}">
 <p></p>
 
-<button type="submit" class="btn btn-primary">ok</button>
+<button type="submit" class="btn btn-primary">Gener</button>
 </div>
 </form>
 </div>
 </div>
 </div>
 
-<div class="col-md-8">
-<div class="panel panel-primary">
-<div class="panel-heading">Les Taches de l'employer</div>
 
-<div class="panel-body">
-<div  th:if="${d1}">
-     <a  th:href="@{'/download?d1='+${d1}+'&d2='+${d2}+'&m='+${m}}" style="float: right;margin-bottom: 6px; margin-top:-10px; "><img th:src="@{/images/exel.png}" style="width: 40px;"></a>
-
-          <!-- Button HTML (to Trigger Modal) -->
-          <a id="note" style="float: left;margin-bottom: 6px; margin-top:-10px; "><img th:src="@{/images/notes.jpg}" style="width: 100px;"></a>
-
-               </div>
-    
-     <table class="table table-bordered">
-
-<thead><tr>
-<td>ID</td>
-<td>Date</td>
-<td>DB</td>
-<td>DF</td>
-<td>HN</td>
-<td>HS15%</td>
-<td>HS40%</td>
-<td>HS50%</td>
-<td>HS100%</td>
-<td>PANIER</td>
-<td>H-T</td>
-
-
-</tr>
-
-</thead>
-<tbody>
-<tr th:each="tache:${taches}">
-<td th:text="${tache.id}"></td>
-<td th:text="${tache.dateday}"></td>
-<td th:text="${tache.datedebut}"></td>
-<td th:text="${tache.datefint}"></td>
-<td th:text="${tache.nbreHtNormale}"></td>
-<td th:text="${tache.nbreSup15}"></td>
-<td th:text="${tache.nbreSup40}"></td>
-<td th:text="${tache.nbreSup50}"></td>
-<td th:text="${tache.nbreSup100}"></td>
-<td th:text="${tache.panier}"></td>
-<td th:text="${tache.total_Heure}"></td>
-
-
-
-
-
-
-</tr>
-<tr>
-     <td th:if="${taches}" COLSPAN="4" ><center>SOMME</center></td>
-     <td th:text="${sommehn}"></td>
-     <td th:text="${somme15}"></td>
-     <td th:text="${somme40}"></td>
-     <td th:text="${somme50}"></td>
-     <td th:text="${somme100}"></td>
-     <td th:text="${panier}"></td>
-     <td th:text="${sommeHt}"></td>
-
-     <td></td>
-
-</tr>
-
-</tbody>
-</table>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>

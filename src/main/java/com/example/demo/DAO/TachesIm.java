@@ -41,8 +41,8 @@ public interface TachesIm extends JpaRepository<Taches, Long>{
 	@Query("select sum(ta.nbreHtNormale) from Taches ta , Employer ep where  ta.dateday between :d1 and :d2 and ta.employer.id like :m and ta.employer.id=ep.id")
 	public int SommeHeureNormaleSecuriter(@Param("m")String matricule,@Param("d1")Date d1,@Param("d2")Date d2);
 
-	@Query("select sum(tn.nbreHtNormale) from Taches tn , Employer en where  tn.dateday between :x and :y and tn.employer.id like :z and tn.employer.id=en.id")
-	public int SommeHN(@Param("x")Date d1,@Param("y")Date d2,@Param("z")String matricule);
+	@Query("select sum(tn.nbreHtNormale) from Taches tn , Employer en where  tn.dateday between :d1 and :d2 and tn.employer.id like :mt and tn.employer.id=en.id")
+	public int SommeHN(@Param("d1")Date d1,@Param("d2")Date d2,@Param("mt")String matricule);
 
 	@Query("select sum(t.nbreSup50) from Taches t , Employer e where  t.dateday between :x and :y and t.employer.id like :z and t.employer.id=e.id")
 	public int SommeSup50(@Param("x")Date d1,@Param("y")Date d2,@Param("z")String matricule);
@@ -61,6 +61,7 @@ public interface TachesIm extends JpaRepository<Taches, Long>{
 	public Page<Taches> Chercherbymotcler(@Param("x")String matricule,Pageable pageable);
 
 	public  List<Taches> findByDateday(@Param("date")Date date);
+
 	
 	
 }

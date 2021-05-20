@@ -26,13 +26,10 @@ import com.example.demo.entity.Taches;
 		t.setTotal_Heure(n);
 		if(n<=9){
 			t.setNbreHtNormale(n);
-			if(n==9){
-				t.setPanier(1);
-
-			}
+		
 		}
 		else {
-			t.setPanier(1);
+		
 			t.settHs(n-9);
 			if(t.getDatedebut().getHours()>=5){
 				if(t.getDatefint().getHours()>t.getDatedebut().getHours()){
@@ -125,10 +122,7 @@ import com.example.demo.entity.Taches;
 		  System.out.println("Nombre40"+":"+regarde2);
 		  if(n<=4){
 			  t1.setNbreHtNormale(n);
-			  if(n==9){
-				  t1.setPanier(1);
-
-			  }
+			
 
 
 		  }
@@ -138,9 +132,7 @@ import com.example.demo.entity.Taches;
 
 
 			  t1.settHs(n - 4);
-			  if (n >= 9) {
-				  t1.setPanier(1);
-			  }
+			 
 			  if (!IdentiqueWeekend(t1.getDateday(), debutwekend)) {
 
 				  if (t1.getDatedebut().getHours() >= 5) {
@@ -660,10 +652,7 @@ import com.example.demo.entity.Taches;
 		 
 		  if(n<=4){
 			  t1.setNbreHtNormale(n);
-			  if(n==9){
-				  t1.setPanier(1);
-
-			  }
+			 
 
 
 		  }
@@ -673,9 +662,7 @@ import com.example.demo.entity.Taches;
 
 
 			  t1.settHs(n - 4);
-			  if (n >= 9) {
-				  t1.setPanier(1);
-			  }
+			
 		
 
 				  if (t1.getDatedebut().getHours() >= 5) {
@@ -965,11 +952,11 @@ import com.example.demo.entity.Taches;
 
 		  n = NombreHeureJours(ConverteDate(t1.getDatedebut()), ConverteDate(t1.getDatefint()));
 		  t1.setTotal_Heure(n);
-		  int p=CalulePanier(t1);
+		//  int p=CalulePanier(t1);
 
 		 
 		
-			  t1.setPanier(p);
+		//	  t1.setPanier(p);
 			  t1.settHs(n);
 			 // Date debutwekend = tachesim.DebutSemaine(t1.getDateday());
 
@@ -1306,15 +1293,11 @@ import com.example.demo.entity.Taches;
 
 		  if(n<=9){
 			  t1.setNbreHtNormale(n);
-			  if(n==9){
-				  t1.setPanier(1);
-
-			  }
-
+			
 
 		  }
 		  else {
-			  t1.setPanier(1);
+	
 			  t1.settHs(n - 9);
 			 // Date debutwekend = tachesim.DebutSemaine(t1.getDateday());
 
@@ -2855,7 +2838,8 @@ import com.example.demo.entity.Taches;
 		 * 
 		 * 
 		 * } else if
-		 * (nbreHeureSecurity+NombreHeureJours(ConverteDate(t1.getDatedebut()),79200)==
+		 * (nbreHeureSecurity+NombreHeureJours(
+t1.getDatedebut()),79200)==
 		 * 40){ t1.setNbreSup50(NombreHeureJours(79200,ConverteDate(t1.getDatefint())));
 		 * t1.setNbreHtNormale(n-t1.getNbreSup50());
 		 * System.out.println("on a  22 on a 40");
@@ -3670,7 +3654,7 @@ import com.example.demo.entity.Taches;
 	  public int CalulePanier(Taches t) {
 	  	int n=0;
 	  	if(t.getDateday().getDay()==5) {
-	  		if(NombreHeureJours(ConverteDate(t.getDatedebut()),ConverteDate(t.getDatefint()))>=4) {
+	  		if(NombreHeureJours(ConverteDate(t.getDatedebut()),ConverteDate(t.getDatefint()))>=9) {
 	  			n=n+1;
 	  		}
 	  		
@@ -3801,7 +3785,7 @@ import com.example.demo.entity.Taches;
 		  int regarde=0;
 		  int regarde2=0;
 		  String d1=formatter6.format(DebutWeekend(t2.getDateday()));
-		  int p=CalulePanier(t1);
+		  //int p=CalulePanier(t1);
 		  Date debutwekend=formatter6.parse(d1);
 		  System.out.println("debuweekend"+d1);
 		  regarde=tachesim.SommeSup15(debutwekend,t1.getDateday(),t1.getEmployer().getId());
@@ -3810,7 +3794,7 @@ import com.example.demo.entity.Taches;
 		  System.out.println("Nombre15"+":"+regarde);
 		  System.out.println("Nombre40"+":"+regarde2);
 		  t1.setTotal_Heure(n);
-		  t1.setPanier(p);
+		//  t1.setPanier(p);
 		  
 		  if(ht+n<=40) {
 			  t1.setTotal_Heure(n);
@@ -4233,6 +4217,14 @@ import com.example.demo.entity.Taches;
 		  
 		
 		return t1;
+	}
+
+	@Override
+	public double CalculeRendementMois(double note1, double note2, double note3, double note4) {
+		// TODO Auto-generated method stub
+		double r=(note1*1.5 +(note2*1.15)+(note3*1.1)+(note4*1.25))/100;
+		
+		return  (double) Math.round(r * 10000) / 10000;
 	}
   
  

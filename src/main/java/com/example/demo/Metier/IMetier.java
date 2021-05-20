@@ -24,6 +24,8 @@ public interface IMetier {
 	public Date DebutWeekend(Date date) throws ParseException;
 	public Taches SecuriryDebut(Taches t1);
 	public Taches SecuritySuplementaire(Taches t1,Taches t2) throws ParseException ;
+	
+	public double CalculeRendementMois(double note1,double note2 ,double note3 ,double note4);
 
 
 }
