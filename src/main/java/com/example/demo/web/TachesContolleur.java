@@ -425,10 +425,6 @@ return "calcleSemaine";
 				calendar.setTime(tache.getDateday());
 				
 				System.out.println("Jour"+calendar.MONDAY);
-				  
-				
-				
-
 				//System.out.println("DayOfMonth"+calendar.DAY_OF_MONTH);
 
 				em=(Employer)employerim.findById(matricule).get();
@@ -722,8 +718,6 @@ return "calcleSemaine";
 
 							}
 
-
-
 						}
 						else{
 							System.out.println("new wekend");
@@ -783,23 +777,11 @@ return "calcleSemaine";
 											
 								}
 							}
-
-
-
 						}
-
-
-
 
 					}
 
 				}
-
-
-
-
-
-
                /*Calendar first=(Calendar) calendar1.clone();
 				first.add(calendar1.DAY_OF_WEEK,first.getFirstDayOfWeek()-first.get(Calendar.DAY_OF_WEEK));
 				System.out.println("first"+first);
@@ -814,9 +796,6 @@ return "calcleSemaine";
 				model.addAttribute("valide", valider);
 				model.addAttribute("failse", failse);
 				model.addAttribute("comment", comment);
-		
-
-
 			}
 			catch (Exception e) {
 				// TODO: handle exception
@@ -1060,7 +1039,12 @@ return "calcleSemaine";
 						ModelRapportTotal modelRapportTotal=new ModelRapportTotal();
 						modelRapportTotal.setMatricule(e.getId());
 						modelRapportTotal.setNom(e.getNom());
+						
 						modelRapportTotal.setFonction(e.getFonction());
+						System.out.println(e.getTachCollection().size());
+						if(e.getTachCollection().size()>0) {
+							
+					System.out.println("ms null et taches not null"+"matricule"+e.getId()+"size"+e.getTachCollection().size());
 			
 					modelRapportTotal.setSommeHn(tachesim.SommeHN(date, date2, e.getId()));
 					modelRapportTotal.setSommeHs15(tachesim.SommeSup15(date, date2, e.getId()));
@@ -1072,6 +1056,13 @@ return "calcleSemaine";
 					
 						modelRapportTotal.setRendement(0);
 					modelRapportTotals.add(modelRapportTotal);
+					}
+						else {
+							modelRapportTotal.setRendement(0);
+							modelRapportTotals.add(modelRapportTotal);
+							
+						}
+						
 						}
 		//		modelRapportTotal.setRendement((moisRepository.findByMoisAndAnneAndEmployerId(, calendar.get(calendar.YEAR), t.getEmployer().getId())).getRendement());
 	
