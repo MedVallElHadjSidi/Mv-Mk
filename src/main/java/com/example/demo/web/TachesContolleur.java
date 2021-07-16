@@ -38,10 +38,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.DAO.EmployerIm;
 import com.example.demo.DAO.MoisRepository;
+import com.example.demo.DAO.ParametreRepository;
 import com.example.demo.DAO.TachesIm;
 import com.example.demo.Metier.IMetier;
 import com.example.demo.entity.Employer;
 import com.example.demo.entity.Mois;
+import com.example.demo.entity.Parametre;
 import com.example.demo.entity.Taches;
 import com.example.demo.excel.ExcelFileExporter;
 import com.example.demo.excel.ExcelFileRapportTotal;
@@ -51,6 +53,7 @@ import com.example.demo.model.ModelRendementMois;
 
 @Controller
 public class TachesContolleur {
+	
 	@Autowired
 	ExcelFileExporter exel;
 	
@@ -66,8 +69,6 @@ public class TachesContolleur {
 	private MoisRepository moisRepository;
 	
 	
-	
-	
 	@Autowired
 	TachesIm tachesim;
 	@Autowired
@@ -77,10 +78,14 @@ public class TachesContolleur {
 	@Autowired
 	ServletContext context;
 	Date dateDebut_Weekend=null;
+
+	
+	
 	
 	
 	
 	Employer em=new Employer();
+
 	
 	@RequestMapping(value = "/tachesUser",method = RequestMethod.POST)
 	public String sommesSemaine(Model model,@RequestParam(name = "Duree1")String d1,

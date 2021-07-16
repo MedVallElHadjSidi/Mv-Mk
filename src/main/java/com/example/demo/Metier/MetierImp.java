@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import  org.springframework.stereotype.Service;
   import  org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.DAO.ParametreRepository;
 import com.example.demo.DAO.TachesIm;
+import com.example.demo.entity.Parametre;
 import com.example.demo.entity.Taches;
   
   @Service
@@ -18,6 +20,8 @@ import com.example.demo.entity.Taches;
   public class MetierImp implements IMetier{
 		@Autowired
 		private TachesIm tachesim;
+		
+		
 
 	@Override
 	public Taches TacheCompletJour(Taches t) {

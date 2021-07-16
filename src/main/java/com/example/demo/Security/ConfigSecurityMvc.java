@@ -17,6 +17,7 @@ public class ConfigSecurityMvc extends WebMvcConfigurerAdapter {
         registry.addViewController("/tacheUser").setViewName("calculSemaineUser");
         registry.addViewController("/rendementmois").setViewName("rendementmois");
         registry.addViewController("/totalRapport").setViewName("totalRapport");
+        registry.addViewController("/addparametre").setViewName("addparametre");
 
 
     }
